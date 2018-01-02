@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap.min.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='narrow-jumbotron.css') }}">	
+</head>
+<body>
+	<div class="container">
+		<header class="header clearfix">
+        <nav>
+          	<ul class="nav nav-pills float-right">
+            	<li class="nav-item">
+              		<a class="nav-link active" href="{{ url_for('showBreweries')}}">Home <span class="sr-only">(current)</span></a>
+            	</li>
+            	<li class="nav-item">
+              		<a class="nav-link" href="{{ url_for('showLogin') }}">Log In</a>
+            	</li>
+          	</ul>
+        </nav>
+        
+        <h3 class="text-muted">Beers</h3>
+      	</header>
+	    
+	    {% with messages = get_flashed_messages() %}
+			{% if messages %}
+				<div class="alert alert-success" role="alert">
+				{% for message in messages %}
+					{{ message }}
+				{% endfor %}
+				</div>
+			{% endif %}
+		{% endwith %}
+
+		<div class="jumbotron">
+		    <h1>{{ brewery.name }}</h1>
+		    <p class="lead">{{ brewery.location }}</p>
+		    <a class="btn btn-sm btn-primary disabled" href="{{url_for('newBeer', brewery_id = brewery.id)}}">Add a Beer</a>
+		</div>
+		
+		<div class="card-columns">
+			{% for beer in beers %}
+				<div class="card bg-light mb-3">
+				    <div class="card-body">
+				      	<h4 class="card-title">{{ beer.name }}</h4>
+				      	<p class="card-text"><em>{{ beer.description }}</em></p>
+				    </div>
+				    <ul class="list-group list-group-flush">
+					    <li class="list-group-item"><strong>Style:</strong> {{ beer.style }}</li>
+					    <li class="list-group-item"><strong>ABV:</strong> {{ beer.abv }}</li>
+					    <li class="list-group-item"><strong>IBU:</strong> {{ beer.ibu }}</li>
+					</ul>
+					<div class="card-body">
+					    <a href="{{ url_for('editBeer', brewery_id = brewery.id, beer_id = beer.id) }}" class="btn btn-primary card-link disabled">Edit</a>
+					    <a href="{{ url_for('deleteBeer', brewery_id = brewery.id, beer_id = beer.id) }}" class="btn card-link disabled">Delete</a>
+					</div>
+			  </div>
+			{% endfor %}
+		</div>
+	</div>
+
+	<script type="text/javascript" src="{{ url_for('static', filename='jquery-3.2.1.min.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='bootstrap.bundle.min.js') }}"></script>
+
+</body>
+</html>
