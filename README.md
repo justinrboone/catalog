@@ -1,1 +1,0 @@
-# fsnd-catalog-project
